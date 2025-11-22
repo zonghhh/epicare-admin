@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Check your mail{% endblock %}
+
+{% block navbar %}
+<!-- Override navbar block to nothing -->
+{% endblock %}
+
+{% block content %}
+<div class="auth-main">
+  <div class="auth-wrapper v3">
+    <div class="auth-form">
+      <div class="auth-header">
+        <h3><span class="fw-bolder text-primary">Epicare</span></h3>
+      </div>
+      <div class="card my-5">
+        <div class="card-body">
+          <div class="mb-4">
+            <h3 class="mb-2"><b>Hi, Check Your Mail</b></h3>
+            <p class="text-muted">We have sent a password recover instructions to your email.</p>
+          </div>
+          <div class="d-grid mt-3">
+            <a href="{{ url_for('login') }}"><button type="button" class="btn btn-primary">Sign in</button></a>
+          </div>
+        </div>
+      </div>
+      <div class="auth-footer row">
+        <!-- <div class=""> -->
+        <div class="col my-1">
+          <p class="m-0">© 2025 Epicare, last updated 30 July 2025</p>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ Main Content ] end -->
+{% endblock %}
+{% block footer %}
+<!-- Override footer block to nothing -->
+{% endblock %}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- [Head] start -->
+
+<head>
+  <title>{% block title %}Epicare -Admin{% endblock %}</title>
+  <!-- [Meta] -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- <meta name="description" content="Mantis is made using Bootstrap 5 design framework. Download the free admin template & use it for your project.">
+  <meta name="keywords" content="Mantis, Dashboard UI Kit, Bootstrap 5, Admin Template, Admin Dashboard, CRM, CMS, Bootstrap Admin Template">
+  <meta name="author" content="CodedThemes"> -->
+
+  <!-- [Favicon] icon -->
+  <link rel="icon" href="{{ url_for('static', filename = 'images/favicon.svg') }}" type="image/x-icon"><!-- [Google Font] Family -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" id="main-font-link">
+  
+  <!-- [Tabler Icons] https://tablericons.com -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/tabler-icons.min.css') }}" >
+  <!-- [Feather Icons] https://feathericons.com -->
+  <!-- [Feather Icons] -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/feather.css') }}">
+
+  <!-- [Font Awesome Icons] -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/fontawesome.css') }}">
+
+  <!-- [Material Icons] -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/material.css') }}">
+
+  <!-- [Template CSS Files] -->
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style-preset.css') }}"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" id="main-style-link">
+
+</head>
+<!-- [Head] end -->
+
+<!-- page-specific-CSS -->
+    {% block css %}
+    {% endblock %}
+
+<!-- page-specific-JS -->
+    {% block scripts %}
+    {% endblock %}
+
+<!-- [Body] Start -->
+
+<body data-pc-preset="preset-1" data-pc-direction="ltr" data-pc-theme="light">
+
+
+    <!-- preloader -->
+    {% include 'partials/preloader.html' %}
+
+    <!-- flash message container -->
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1050; min-width: 300px;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages[:3] %}
+            <div id="flash-message" class="alert alert-{{ category }} alert-dismissible fade show shadow" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- navbar -->
+    {% block navbar %}
+        {% include 'partials/navbar.html' %}
+    {% endblock %}
+
+    <!-- main content -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- footer -->
+    {% block footer %}
+        {% include 'partials/footer.html' %}
+    {% endblock %}
+
+
+    <!-- JS Scripts -->
+    <script src="{{ url_for('static', filename='js/plugins/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/simplebar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fonts/custom-font.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pcoded.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/feather.min.js') }}"></script>
+
+      
+    <script>layout_change('light');</script>
+    
+    <script>change_box_container('false');</script>
+    
+    <script>layout_rtl_change('false');</script>
+
+    <script>preset_change("preset-1");</script>
+
+    <script>font_change("Public-Sans");</script>
+
+    <script>
+        // Wait 3 seconds, then fade out the flash message
+        window.addEventListener('DOMContentLoaded', () => {
+            const flash = document.getElementById('flash-message');
+            if (flash) {
+            setTimeout(() => {
+                // fade-out effect
+                flash.style.transition = 'opacity 1.5s ease-out';
+                flash.style.opacity = '0';
+                // remove it from DOM after fade out
+                setTimeout(() => flash.remove(), 1500);
+            }, 3500); // 3500ms = 3.5 seconds
+            }
+        });
+    </script>
+</body>
+</html>

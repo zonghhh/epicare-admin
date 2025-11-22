@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}PWID -Datatable{% endblock %}
+
+{% block css %}
+<!-- [Page specific CSS] start -->
+<!-- data tables css -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/dataTables.bootstrap5.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/buttons.bootstrap5.min.css') }}">
+<!-- [Page specific CSS] end -->
+{% endblock %}
+
+{% block scripts %}
+  <!-- [Page Specific JS] start -->
+  <!-- datatable Js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='js/plugins/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/buttons.colVis.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/buttons.print.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins/buttons.bootstrap5.min.js') }}"></script>
+
+  <script>
+    // [ HTML5 Export Buttons ]
+    $('#basic-btn').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['copy', 'csv', 'excel', 'print']
+    });
+
+    // [ Column Selectors ]
+    $('#cbtn-selectors').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'copyHtml5',
+          exportOptions: {
+            columns: [0, ':visible']
+          }
+        },
+        {
+          extend: 'excelHtml5',
+          exportOptions: {
+            columns: ':visible'
+          }
+        },
+        {
+          extend: 'pdfHtml5',
+          exportOptions: {
+            columns: [0, 1, 2, 5]
+          }
+        },
+        'colvis'
+      ]
+    });
+
+    // [ Excel - Cell Background ]
+    $('#excel-bg').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          customize: function (xlsx) {
+            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+            $('row c[r^="F"]', sheet).each(function () {
+              if ($('is t', this).text().replace(/[^\d]/g, '') * 1 >= 500000) {
+                $(this).attr('s', '20');
+              }
+            });
+          }
+        }
+      ]
+    });
+
+    // [ Custom File (JSON) ]
+    $('#pdf-json').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          text: 'JSON',
+          action: function (e, dt, button, config) {
+            var data = dt.buttons.exportData();
+            $.fn.dataTable.fileSave(new Blob([JSON.stringify(data)]), 'Export.json');
+          }
+        }
+      ]
+    });
+
+    
+    $(document).ready(function() {
+    $('#basic-btn').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['copy', 'csv', 'excel', 'print']
+    });
+    });
+  </script>
+  <!-- [Page Specific JS] end -->
+{% endblock %}
+
+{% block content %}
+  <section class="pc-container">
+    <div class="pc-content">
+      <!-- [ breadcrumb ] start -->
+      <div class="page-header">
+        <div class="page-block">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0)">Users</a></li>
+                <li class="breadcrumb-item" aria-current="page">PWIDs</li>
+              </ul>
+            </div>
+            <div class="col-md-12">
+              <div class="page-header-title">
+                <h2 class="mb-0">PWIDs</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [ breadcrumb ] end -->
+
+      <!-- [ Main Content ] start -->
+      <div class="row">
+        <!-- HTML5 Export Buttons table start -->
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header table-card-header">
+              <h5>PWID accounts</h5>
+            </div>
+            <div class="card-body">
+              <div class="dt-responsive table-responsive">
+                                <table id="basic-btn" class="table table-striped table-bordered nowrap">
+                  <thead>
+                    <tr>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Account Creation Date</th>
+                      <th>Page Views</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Account Creation Date</th>
+                      <th>Page Views</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {% for u in users %}
+                    <tr>
+                      <td>{{ u['username'] }}</td>
+                      <td>{{ u['email'] }}</td>
+                      <td>{{ u['created_at'] }}</td>
+                      <td>{{ u['page_views'] }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- HTML5 Export Buttons end -->
+        </div>
+      <!-- [ Main Content ] end -->
+    </div>
+  </section>
+{% endblock %}

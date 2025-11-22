@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block scripts %}
+<!-- [Page Specific JS] start -->
+<script src="{{ url_for('static', filename='js/plugins/apexcharts.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pages/dashboard-default.js') }}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  fetch('/total-pageview-data')
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.json();
+    })
+    .then(data => {
+      const current = data.current_year || 0;
+      const previous = data.last_year || 0;
+
+      // Calculate growth percentage
+      let growthPercent;
+      if (previous === 0) {
+        growthPercent = current > 0 ? 100 : 0; // if no last year data
+      } else {
+        growthPercent = ((current - previous) / previous) * 100;
+      }
+
+      // Update total views
+      document.querySelector('#total-pageviews').textContent =
+        current.toLocaleString();
+
+      // Update growth badge
+      const growthBadge = document.querySelector('#total-pageviews-growth');
+      growthBadge.innerHTML = `
+        <i class="ti ti-trending-${growthPercent >= 0 ? 'up' : 'down'}"></i>
+        ${growthPercent.toFixed(1)}%
+      `;
+      growthBadge.className =
+        `badge border ${growthPercent >= 0 ? 'bg-light-primary border-primary' : 'bg-light-danger border-danger'}`;
+    })
+    .catch(error => {
+      console.error('Error fetching total views:', error);
+      document.querySelector('#total-pageviews').textContent = 'Error';
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  fetch('/usercount-data')
+    .then(response => {
+      if (!response.ok) throw new Error('Network response not ok');
+      return response.json();
+    })
+    .then(data => {
+      document.querySelectorAll('.total-users').forEach(el => {
+        el.textContent = data.Total_users.toLocaleString();
+      });
+    })
+    .catch(err => {
+      console.error('Failed to load total users:', err);
+      document.querySelectorAll('.total-users').forEach(el => {
+        el.textContent = 'Error';
+      });
+    });
+});
+
+</script>
+{% endblock %}
+
+{% block content %}
+  <!-- [ Main Content ] start -->
+  <div class="pc-container">
+    <div class="pc-content">
+      <!-- [ breadcrumb ] start -->
+      <div class="page-header">
+        <div class="page-block">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <div class="page-header-title">
+                <h5 class="m-b-10">Home</h5>
+              </div>
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../dashboard/index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0)">Dashboard</a></li>
+                <li class="breadcrumb-item" aria-current="page">Home</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [ breadcrumb ] end -->
+      <!-- [ Main Content ] start -->
+      <div class="row">
+        <!-- [ sample-page ] start -->
+        <div class="col-md-6 col-xl-3">
+          <div class="card">
+            <div class="card-body">
+              <h6 class="mb-2 f-w-400 text-muted">Total Page Views</h6>
+              <h4 class="mb-3" id="total-pageviews">Loading...</h4>
+              <p class="mb-0 text-muted text-sm">You made an extra <span class="text-primary" id="total-pageviews-growth">Loading...</span> this year
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <div class="card">
+            <div class="card-body">
+              <h6 class="mb-2 f-w-400 text-muted">Total Users</h6>
+              <h4 class="mb-3 total-users">Loading...</h4>
+              <p class="mb-0 text-muted text-sm">&nbsp;<span class="text-success"></span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xl-8">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 class="mb-0">Page Views</h5>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div id="visitor-chart"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xl-4">
+          <h5 class="mb-3">Audience Comparison</h5>
+          <div class="card">
+            <div class="card-body">
+              <h6 class="mb-2 f-w-400 text-muted">User Count</h6>
+              <h3 class="mb-3 total-users">Loading...</h3>
+              <div id="usercount-compare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ Main Content ] end -->
+{% endblock %}

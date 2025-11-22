@@ -1,0 +1,26 @@
+# Ignore Python cache files and directories
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Optionally ignore other common Python artifacts
+*.log
+*.egg-info/
+*.eggs/
+*.env
+*.venv
+.env
+.venv
+
+# database files (platform dependent extensions)
+*.db
+*.dat
+*.bak
+*.dir
+static/uploads/profiles
+*.csv
+.csv
+
+# VS Code settings (optional, for team consistency)
+.vscode/
+

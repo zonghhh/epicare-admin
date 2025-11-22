@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block navbar %}
+<!-- Override navbar block to nothing -->
+{% endblock %}
+
+{% block content %}
+<!-- [Body] Start -->
+<div class="auth-main">
+  <div class="auth-wrapper v3">
+    <div class="auth-form">
+      <div class="auth-header">
+        <h3><span class="fw-bolder text-primary">Epicare</span></h3>
+      </div>
+      <!-- form start -->
+      <form method="POST" action="/register" class="card my-5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+              <h3 class="mb-0"><b>Sign up</b></h3>
+              <a href="{{ url_for('login') }}" class="link-primary">Already have an account?</a>
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label" for="email">Email Address*</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label" for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            </div>
+            <p class="mt-4 text-sm text-muted">By Signing up, you agree to our <a href="#" class="text-primary"> Terms of Service </a> and <a href="#" class="text-primary"> Privacy Policy</a></p>
+            <div class="d-grid mt-3">
+              <button type="submit" class="btn btn-primary">Create Account</button>
+            </div>
+          </div>
+      </form>
+      <div class="auth-footer row">
+        <!-- <div class=""> -->
+          <div class="col my-1">
+            <p class="m-0">© 2025 Epicare, last updated 30 July 2025</p>
+          </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- [ Main Content ] end -->
+{% endblock %}
+{% block footer %}
+<!-- Override footer block to nothing -->
+{% endblock %}
