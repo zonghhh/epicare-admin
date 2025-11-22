@@ -34,3 +34,7 @@ MAIL_DEFAULT_SENDER=
 
 #### Create a file 'page_views.csv'  
 timestamp,user_type --> put this in the first row of the file
+
+
+Note: This repository was recently rebuilt from a working backup.
+All current code reflects the latest working version of the project.
